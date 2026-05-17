@@ -3,8 +3,11 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
+      args:
+        - USER_ID=${UID:-1000}
+        - GROUP_ID=${GID:-1000}
     working_dir: /app
-    command: sh -c "[ -x node_modules/.bin/tsc ] || bun install --frozen-lockfile; bun run dev"
+    command: sh -c "[ -x node_modules/.bin/tsc ] || bun install --frozen-lockfile; bun run db:push; bun run dev"
     volumes:
       - ./server:/app
       - server_node_modules:/app/node_modules
@@ -23,6 +26,9 @@ services:
       context: ./client
       dockerfile: Dockerfile
       target: base
+      args:
+        - USER_ID=${UID:-1000}
+        - GROUP_ID=${GID:-1000}
     working_dir: /app
     command: sh -c "[ -x node_modules/.bin/vite ] || bun install --frozen-lockfile; bun run dev"
     volumes:

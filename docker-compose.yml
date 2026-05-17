@@ -16,7 +16,11 @@ services:
       retries: 10
 
   server:
-    build: ./server
+    build:
+      context: ./server
+      args:
+        - USER_ID=${UID:-1000}
+        - GROUP_ID=${GID:-1000}
     environment:
       PORT: 3000
       DATABASE_URL: postgresql://app:app@postgres:5432/app
@@ -27,7 +31,11 @@ services:
         condition: service_healthy
 
   client:
-    build: ./client
+    build:
+      context: ./client
+      args:
+        - USER_ID=${UID:-1000}
+        - GROUP_ID=${GID:-1000}
     depends_on:
       - server
 
