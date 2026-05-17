@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "bun --watch src/index.ts",
     "start": "bun src/index.ts",
-    "check": "bunx tsc --noEmit"
+    "check": "bunx tsc --noEmit",
+    "db:push": "drizzle-kit push"
   },
   "dependencies": {
     "better-auth": "^1.2.8",

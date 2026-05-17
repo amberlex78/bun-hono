@@ -43,9 +43,11 @@ prod-down: ## Зупинити проект
 	$(DOCKER_PROD) down --remove-orphans
 
 prod-build: ## Зібрати образи та оновити продакшн без довгого простою
-	$(DOCKER_PROD) pull
 	$(DOCKER_PROD) build $(s)
 	$(DOCKER_PROD) up --detach --remove-orphans
+
+db-push: ## Синхронізувати схему БД (Drizzle)
+	$(DOCKER_DEV) exec server bun run db:push
 
 prod-logs: ## Перегляд логів у реальному часі
 	$(DOCKER_PROD) logs -f --tail=200 $(s)
