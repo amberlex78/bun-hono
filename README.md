@@ -2,8 +2,8 @@
 
 ## Stack
 - Server: Bun, Hono, Zod, Drizzle ORM, Better Auth
-- Client: React + Vite (Bun), shadcn/ui-ready setup
-- Infra: Postgres, Nginx, Docker Compose (base/dev/prod)
+- Client: React 19 + Vite (Bun), shadcn/ui-ready setup
+- Infra: PostgreSQL 17, Nginx 1.30.0-alpine, Docker Compose (base/dev/prod)
 
 ## Roles
 - `regular`

@@ -12,7 +12,7 @@ SERVICES := postgres server client nginx
 .PHONY: help doctor
 .PHONY: dev dev-build dev-up dev-down dev-restart dev-logs dev-ps dev-pull dev-clean
 .PHONY: prod prod-build prod-up prod-down prod-restart prod-logs prod-ps prod-pull prod-clean
-.PHONY: logs ps stop clean prune
+.PHONY: logs ps stop clean prune db-reset
 
 help:
 	@echo "Usage: make <target>"
@@ -23,6 +23,7 @@ help:
 	@echo "  make logs s=server        Tail logs for one service (server|client|nginx|postgres)"
 	@echo "  make stop                 Stop all project containers"
 	@echo "  make clean                Stop all and remove volumes + orphans"
+	@echo "  make db-reset             Reset only Postgres volume for dev stack"
 	@echo "  make prune                Docker system prune (dangerous)"
 	@echo ""
 	@echo "Dev:"
@@ -79,6 +80,10 @@ clean:
 
 prune:
 	@docker system prune -af --volumes
+
+db-reset:
+	$(COMPOSE) $(DEV_FILES) stop postgres || true
+	docker volume rm $(PROJECT)_pg_data || true
 
 # Dev
 dev: doctor
