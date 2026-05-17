@@ -15,7 +15,7 @@ help: ## Показати цю довідку
 ## DEVELOPMENT (Local)
 ## —————————————————————————————————————————————————————————————————————————————
 dev-up: ## Підняти проект
-	$(DOCKER_DEV) up --detach
+	$(DOCKER_DEV) up
 
 dev-down: ## Зупинити проект
 	$(DOCKER_DEV) down --remove-orphans
@@ -23,7 +23,7 @@ dev-down: ## Зупинити проект
 dev-build: ## Зібрати образи для розробки
 	$(DOCKER_DEV) down --remove-orphans
 	$(DOCKER_DEV) build $(s)
-	$(DOCKER_DEV) up --detach
+	$(DOCKER_DEV) up
 
 dev-restart: dev-down dev-up ## Перезапуск проекту
 
