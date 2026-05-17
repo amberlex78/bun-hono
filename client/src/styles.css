@@ -1,0 +1,27 @@
+:root {
+  --bg: #f4f1ea;
+  --fg: #17202a;
+  --accent: #0f766e;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top left, #f7efe0, var(--bg));
+  color: var(--fg);
+}
+
+.nav {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  border-bottom: 1px solid #ddd3bd;
+}
+
+.container {
+  padding: 24px;
+}
+
+a { color: var(--accent); }

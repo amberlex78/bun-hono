@@ -1,0 +1,33 @@
+services:
+  server:
+    image: node:22-alpine
+    working_dir: /app
+    command: sh -c "npm i -g bun && bun install && bun run dev"
+    volumes:
+      - ./server:/app
+    environment:
+      BETTER_AUTH_SECRET: dev-secret-change-me
+      DATABASE_URL: postgresql://app:app@postgres:5432/app
+      BETTER_AUTH_URL: http://localhost
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  client:
+    image: node:22-alpine
+    working_dir: /app
+    command: sh -c "npm i -g bun && bun install && bun run dev"
+    volumes:
+      - ./client:/app
+    ports:
+      - "5173:5173"
+    depends_on:
+      - server
+
+  nginx:
+    volumes:
+      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "8080:80"
