@@ -1,9 +1,9 @@
 import type { Context, Next } from "hono";
-import type { Role, SessionUser } from "../types";
+import type { AppBindings, Role, SessionUser } from "../types";
 
 const DEMO_ADMIN_EMAIL = "admin@example.com";
 
-export const mockSession = async (c: Context, next: Next) => {
+export const mockSession = async (c: Context<AppBindings>, next: Next) => {
   const email = c.req.header("x-user-email") || "";
   const roleHeader = c.req.header("x-user-role") as Role | undefined;
 
@@ -16,7 +16,7 @@ export const mockSession = async (c: Context, next: Next) => {
   await next();
 };
 
-export const requireAuth = async (c: Context, next: Next) => {
+export const requireAuth = async (c: Context<AppBindings>, next: Next) => {
   const user = c.get("user") as SessionUser | undefined;
   if (!user) {
     return c.json({ message: "Unauthorized" }, 401);
@@ -25,7 +25,7 @@ export const requireAuth = async (c: Context, next: Next) => {
 };
 
 export const requireRole = (roles: Role[]) => {
-  return async (c: Context, next: Next) => {
+  return async (c: Context<AppBindings>, next: Next) => {
     const user = c.get("user") as SessionUser | undefined;
 
     if (!user) {

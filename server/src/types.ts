@@ -5,3 +5,9 @@ export type SessionUser = {
   email: string;
   role: Role;
 };
+
+export type AppBindings = {
+  Variables: {
+    user: SessionUser;
+  };
+};
