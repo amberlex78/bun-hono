@@ -17,6 +17,7 @@ Use alias imports in client code: `@/* -> client/src/*`.
 Prefer `make` targets from repo root:
 
 - `make dev-up`: start full dev stack (client, server, db, nginx).
+- `make dev-setup`: install local dependencies (`client` + `server`), then rebuild and start dev.
 - `make dev-build`: rebuild selected/all services, then start.
 - `make dev-down`: stop dev stack and remove orphans.
 - `make dev-logs s=server`: tail logs (`s` optional: `client`, `server`, `nginx`, `db`).
