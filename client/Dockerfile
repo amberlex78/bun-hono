@@ -1,4 +1,4 @@
-FROM oven/bun:1 AS base
+FROM oven/bun:1.3.14 AS base
 ARG USER_ID=1000
 ARG GROUP_ID=1000
 

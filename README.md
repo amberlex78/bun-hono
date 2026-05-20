@@ -59,6 +59,14 @@ Effective commands:
   - server checks `node_modules/.bin/tsc`
   - client checks `node_modules/.bin/vite`
 - If you changed PostgreSQL major version (e.g. 16 -> 17), old volume is incompatible. Remove the DB volume and start again.
+- Bun version is pinned to `1.3.14` in both Dockerfiles and `.bun-version` for reproducible local/container tooling.
+
+## VSCode Workflow (Recommended)
+- Best option for Docker-first development: use VSCode Dev Containers (or "Attach to Running Container") so TS server and extensions run inside the same environment as your app.
+- If you work directly on host VSCode, install dependencies locally in addition to container volumes:
+  - `cd client && bun install --frozen-lockfile`
+  - `cd server && bun install --frozen-lockfile`
+  This keeps IntelliSense/module resolution working on the host editor.
 
 ## Next Steps
 - Replace mock auth middleware with real Better Auth session/cookies + Drizzle adapter

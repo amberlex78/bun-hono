@@ -6,11 +6,11 @@
     "jsx": "react-jsx",
     "moduleResolution": "Bundler",
     "strict": true,
+    "ignoreDeprecations": "6.0",
     "noEmit": true,
     "skipLibCheck": true,
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src"]

@@ -27,6 +27,7 @@ App-level commands:
 
 - `cd server && bun run dev` (API hot reload), `bun run check` (TypeScript check).
 - `cd client && bun run dev`, `bun run build`, `bun run preview`.
+- Bun is pinned via `.bun-version` and Docker base images (`oven/bun:1.3.14`). Keep these aligned when upgrading.
 
 ## Coding Style & Naming Conventions
 
@@ -45,6 +46,14 @@ There is no test runner configured yet. Minimum quality gate today:
 - `client`: `bun run build`
 
 When adding tests, place them near source as `*.test.ts` / `*.test.tsx` and prioritize route logic, auth guards, and form validation flows.
+
+## Editor & Environment Consistency
+
+For Docker-first development, prefer VSCode Dev Containers / Attach-to-Container so editor tooling uses container dependencies.
+If editing on host VSCode, install local dependencies for module resolution:
+
+- `cd client && bun install --frozen-lockfile`
+- `cd server && bun install --frozen-lockfile`
 
 ## Commit & Pull Request Guidelines
 
