@@ -72,6 +72,7 @@ Effective commands:
 - Dev containers run `bun install` only when required bins are missing:
   - server checks `node_modules/.bin/tsc`
   - client checks `node_modules/.bin/vite`
+- In dev, server startup runs `bun run db:push`, so after `make dev-build` schema is applied to Postgres automatically.
 - If you changed PostgreSQL major version (e.g. 16 -> 17), old volume is incompatible. Remove the DB volume and start again.
 - Bun version is pinned to `1.3.14` in both Dockerfiles and `.bun-version` for reproducible local/container tooling.
 - Production targets fail fast if `BETTER_AUTH_SECRET` / `BETTER_AUTH_URL` are empty or default placeholders.
@@ -80,6 +81,10 @@ Effective commands:
 
 - Before `make prod-build` / `make prod-up`, create `.env` on VPS from `.env.prod.example`.
 - Set real values for:
+  - `POSTGRES_DB`
+  - `POSTGRES_USER`
+  - `POSTGRES_PASSWORD`
+  - `DATABASE_URL`
   - `BETTER_AUTH_SECRET` (long random secret)
   - `BETTER_AUTH_URL` (public HTTPS URL of your app)
 - Regular update flow on VPS: `make deploy`.

@@ -56,6 +56,11 @@ deploy: ## [PROD] Оновити код (git pull) і виконати prod-buil
 	$(MAKE) prod-build
 
 prod-env-check: ## [PROD] Перевірити обов'язкові змінні оточення
+	@test -n "$$POSTGRES_DB" || (echo "ERROR: POSTGRES_DB is required for production"; exit 1)
+	@test -n "$$POSTGRES_USER" || (echo "ERROR: POSTGRES_USER is required for production"; exit 1)
+	@test -n "$$POSTGRES_PASSWORD" || (echo "ERROR: POSTGRES_PASSWORD is required for production"; exit 1)
+	@test "$$POSTGRES_PASSWORD" != "app" || (echo "ERROR: POSTGRES_PASSWORD must not be 'app' in production"; exit 1)
+	@test -n "$$DATABASE_URL" || (echo "ERROR: DATABASE_URL is required for production"; exit 1)
 	@test -n "$$BETTER_AUTH_SECRET" || (echo "ERROR: BETTER_AUTH_SECRET is required for production"; exit 1)
 	@test -n "$$BETTER_AUTH_URL" || (echo "ERROR: BETTER_AUTH_URL is required for production"; exit 1)
 	@test "$$BETTER_AUTH_SECRET" != "change-me" || (echo "ERROR: BETTER_AUTH_SECRET must not be 'change-me' in production"; exit 1)
