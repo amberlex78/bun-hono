@@ -9,7 +9,7 @@ DOCKER_PROD = docker compose -f docker-compose.yml -f docker-compose.prod.yml
 # Змінна для вказівки конкретного сервісу, наприклад: make dev-logs s=php
 s ?=
 
-.PHONY: help dev-setup dev-up dev-build dev-down dev-restart restart dev-logs dev-reset-modules prod-up prod-build prod-down prod-logs clean clean-all
+.PHONY: help dev-setup dev-up dev-build dev-down dev-restart restart dev-logs dev-reset-modules deploy prod-env-check prod-up prod-build prod-down prod-logs clean clean-all
 
 help: ## Показати цю довідку
 	@grep -E '(^[a-zA-Z0-9\./_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}{printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
@@ -51,17 +51,27 @@ dev-reset-modules: ## Скинути тільки node_modules volumes (без �
 ## —————————————————————————————————————————————————————————————————————————————
 ## PRODUCTION (Deployment)
 ## —————————————————————————————————————————————————————————————————————————————
-prod-up: ## Підняти проект
+deploy: ## [PROD] Оновити код (git pull) і виконати prod-build
+	git pull --ff-only
+	$(MAKE) prod-build
+
+prod-env-check: ## [PROD] Перевірити обов'язкові змінні оточення
+	@test -n "$$BETTER_AUTH_SECRET" || (echo "ERROR: BETTER_AUTH_SECRET is required for production"; exit 1)
+	@test -n "$$BETTER_AUTH_URL" || (echo "ERROR: BETTER_AUTH_URL is required for production"; exit 1)
+	@test "$$BETTER_AUTH_SECRET" != "change-me" || (echo "ERROR: BETTER_AUTH_SECRET must not be 'change-me' in production"; exit 1)
+	@test "$$BETTER_AUTH_URL" != "http://localhost" || (echo "ERROR: BETTER_AUTH_URL must not be 'http://localhost' in production"; exit 1)
+
+prod-up: prod-env-check ## Підняти проект
 	$(DOCKER_PROD) up --detach
 
 prod-down: ## Зупинити проект
 	$(DOCKER_PROD) down --remove-orphans
 
-prod-build: ## Зібрати образи та оновити продакшн без довгого простою
+prod-build: prod-env-check ## Зібрати образи та оновити продакшн без довгого простою
 	$(DOCKER_PROD) build $(s)
 	$(DOCKER_PROD) up --detach --remove-orphans
 
-db-migrate: ## [PROD] Застосувати міграції (якщо вони будуть створені)
+db-migrate: prod-env-check ## [PROD] Застосувати міграції (якщо вони будуть створені)
 	$(DOCKER_PROD) exec server bunx drizzle-kit migrate
 
 prod-logs: ## Перегляд логів у реальному часі
